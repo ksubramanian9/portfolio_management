@@ -1,27 +1,18 @@
-# GitHub Folder Structure for Investment Portfolio Manager Application Documentation
+# Folder Structure
 
-The documentation for the Investment Portfolio Manager application, built using microservices, Domain-Driven Design (DDD), Event-Driven Architecture (EDA), and Functional Programming (FP), is organized as Markdown files in a GitHub repository. The folder structure is designed to be intuitive, scalable, and aligned with the system’s modular architecture, facilitating access for developers, architects, and stakeholders. Below is the proposed folder structure, starting from the root directory, with descriptions of each directory and key files.
+The folder structure of the Investment Portfolio Manager application’s GitHub repository is designed to organize code, documentation, and supporting assets for a microservices-based architecture built with Scala, adhering to Domain-Driven Design (DDD), Event-Driven Architecture (EDA), and Functional Programming (FP) principles. The structure separates source code (`src/`), documentation (`docs/`), assets (`assets/`), and deployment configurations (`docker/`), ensuring modularity, maintainability, and alignment with non-functional requirements like scalability, reliability, and security. This document describes the repository’s organization, including where code for each microservice is stored, and aligns with the ubiquitous language, bounded contexts, and domain events defined in related documentation.
 
-## Folder Structure
+## Repository Structure
 
 ```
-/investment-portfolio-manager-docs
-├── README.md
-├── CONTRIBUTING.md
-├── CODE_OF_CONDUCT.md
-├── LICENSE.md
-├── .github/
-│   ├── ISSUE_TEMPLATE/
-│   │   ├── bug_report.md
-│   │   └── feature_request.md
-│   └── PULL_REQUEST_TEMPLATE/
-│       └── pull_request_template.md
+investment-portfolio-manager/
 ├── docs/
-│   ├── requirements/
-│   │   ├── high_level_requirements.md
-│   │   └── non_functional_requirements.md
 │   ├── architecture/
-│   │   ├── overview.md
+│   │   ├── domain_driven_design/
+│   │   │   ├── bounded_contexts.md
+│   │   │   ├── domain_events.md
+│   │   │   ├── ubiquitous_language.md
+│   │   │   └── folder_structure.md
 │   │   ├── microservices/
 │   │   │   ├── portfolio_management_service.md
 │   │   │   ├── asset_management_service.md
@@ -30,123 +21,250 @@ The documentation for the Investment Portfolio Manager application, built using 
 │   │   │   ├── risk_management_service.md
 │   │   │   ├── reporting_service.md
 │   │   │   ├── user_management_service.md
-│   │   │   └── integration_service.md
-│   │   ├── domain_driven_design/
-│   │   │   ├── bounded_contexts.md
-│   │   │   ├── ubiquitous_language.md
-│   │   │   └── domain_events.md
-│   │   ├── event_driven_architecture/
-│   │   │   ├── event_flows.md
-│   │   │   ├── event_sourcing.md
-│   │   │   └── messaging.md
-│   │   └── functional_programming/
-│   │       ├── principles.md
-│   │       ├── examples.md
-│   │       └── best_practices.md
-│   ├── integration/
-│   │   ├── external_systems.md
-│   │   ├── api_contracts.md
-│   │   └── data_feeds.md
-│   ├── development/
-│   │   ├── setup.md
-│   │   ├── coding_guidelines.md
-│   │   ├── testing.md
-│   │   └── deployment.md
-│   ├── operations/
-│   │   ├── monitoring.md
-│   │   ├── logging.md
-│   │   └── security.md
-│   └── references/
-│       ├── glossary.md
-│       ├── resources.md
-│       └── faq.md
-└── assets/
-    ├── diagrams/
-    │   ├── architecture_diagram.png
-    │   ├── event_flow_diagram.png
-    │   └── domain_model_diagram.png
-    └── templates/
-        ├── report_template.md
-        └── dashboard_template.md
+│   │   │   ├── integration_service.md
+│   │   │   └── ...
+│   │   └── system_design/
+│   │       ├── overview.md
+│   │       ├── technology_stack.md
+│   │       └── ...
+│   ├── api/
+│   │   ├── portfolio_management_api.md
+│   │   ├── asset_management_api.md
+│   │   └── ...
+│   └── guides/
+│       ├── setup.md
+│       ├── development.md
+│       ├── deployment.md
+│       └── ...
+├── src/
+│   ├── portfolio-management-service/
+│   │   ├── main/
+│   │   │   ├── scala/
+│   │   │   │   ├── domain/
+│   │   │   │   │   ├── Portfolio.scala
+│   │   │   │   │   ├── Asset.scala
+│   │   │   │   │   ├── Currency.scala
+│   │   │   │   │   └── ...
+│   │   │   │   ├── repository/
+│   │   │   │   │   ├── PortfolioRepository.scala
+│   │   │   │   │   └── ...
+│   │   │   │   ├── service/
+│   │   │   │   │   ├── PortfolioService.scala
+│   │   │   │   │   ├── PortfolioPerformanceCalculator.scala
+│   │   │   │   │   └── ...
+│   │   │   │   ├── api/
+│   │   │   │   │   ├── PortfolioRoutes.scala
+│   │   │   │   │   └── ...
+│   │   │   │   └── event/
+│   │   │   │       ├── TradeExecutedHandler.scala
+│   │   │   │       ├── PortfolioUpdatedHandler.scala
+│   │   │   │       └── ...
+│   │   └── test/
+│   │       ├── scala/
+│   │       │   ├── domain/
+│   │       │   │   ├── PortfolioSpec.scala
+│   │       │   │   └── ...
+│   │       │   ├── repository/
+│   │       │   │   ├── PortfolioRepositorySpec.scala
+│   │       │   │   └── ...
+│   │       │   ├── service/
+│   │       │   └── ...
+│   ├── asset-management-service/
+│   │   ├── main/
+│   │   │   ├── scala/
+│   │   │   │   ├── domain/
+│   │   │   │   │   ├── Asset.scala
+│   │   │   │   │   ├── AssetType.scala
+│   │   │   │   │   └── ...
+│   │   │   │   ├── repository/
+│   │   │   │   ├── service/
+│   │   │   │   ├── api/
+│   │   │   │   └── event/
+│   │   │   │       ├── PriceUpdatedHandler.scala
+│   │   │   │       └── ...
+│   │   └── test/
+│   │       ├── scala/
+│   │       │   ├── domain/
+│   │       │   ├── repository/
+│   │       │   ├── service/
+│   │       │   └── ...
+│   ├── transaction-management-service/
+│   │   ├── main/
+│   │   │   ├── scala/
+│   │   │   │   ├── domain/
+│   │   │   │   │   ├── Transaction.scala
+│   │   │   │   │   └── ...
+│   │   │   │   ├── repository/
+│   │   │   │   ├── service/
+│   │   │   │   ├── api/
+│   │   │   │   └── event/
+│   │   │   │       ├── TradeExecutedHandler.scala
+│   │   │   │       └── ...
+│   │   └── test/
+│   │       ├── scala/
+│   ├── performance-calculation-service/
+│   │   ├── main/
+│   │   │   ├── scala/
+│   │   │   │   ├── domain/
+│   │   │   │   ├── repository/
+│   │   │   │   ├── service/
+│   │   │   │   ├── api/
+│   │   │   │   └── event/
+│   │   │   │       ├── PerformanceCalculatedHandler.scala
+│   │   │   │       └── ...
+│   │   └── test/
+│   │       ├── scala/
+│   ├── risk-management-service/
+│   │   ├── main/
+│   │   │   ├── scala/
+│   │   │   │   ├── domain/
+│   │   │   │   ├── repository/
+│   │   │   │   ├── service/
+│   │   │   │   ├── api/
+│   │   │   │   └── event/
+│   │   │   │       ├── RiskAssessmentUpdatedHandler.scala
+│   │   │   │       └── ...
+│   │   └── test/
+│   │       ├── scala/
+│   ├── reporting-service/
+│   │   ├── main/
+│   │   │   ├── scala/
+│   │   │   │   ├── domain/
+│   │   │   │   ├── repository/
+│   │   │   │   ├── service/
+│   │   │   │   ├── api/
+│   │   │   │   └── event/
+│   │   │   │       ├── ReportGeneratedHandler.scala
+│   │   │   │       └── ...
+│   │   └── test/
+│   │       ├── scala/
+│   ├── user-management-service/
+│   │   ├── main/
+│   │   │   ├── scala/
+│   │   │   │   ├── domain/
+│   │   │   │   │   ├── User.scala
+│   │   │   │   │   └── ...
+│   │   │   │   ├── repository/
+│   │   │   │   ├── service/
+│   │   │   │   ├── api/
+│   │   │   │   └── event/
+│   │   │   │       ├── UserCreatedHandler.scala
+│   │   │   │       ├── UserUpdatedHandler.scala
+│   │   │   │       └── ...
+│   │   └── test/
+│   │       ├── scala/
+│   ├── integration-service/
+│   │   ├── main/
+│   │   │   ├── scala/
+│   │   │   │   ├── domain/
+│   │   │   │   ├── repository/
+│   │   │   │   ├── service/
+│   │   │   │   ├── api/
+│   │   │   │   └── event/
+│   │   │   │       ├── MarketDataUpdatedHandler.scala
+│   │   │   │       ├── CustodianDataSyncedHandler.scala
+│   │   │   │       └── ...
+│   │   └── test/
+│   │       ├── scala/
+│   └── ...
+├── assets/
+│   ├── diagrams/
+│   │   ├── domain_model_diagram.png
+│   │   ├── architecture_diagram.png
+│   │   └── ...
+│   └── data/
+│       ├── sample_portfolios.json
+│       └── ...
+├── docker/
+│   ├── portfolio-management-service/
+│   │   ├── Dockerfile
+│   │   └── kubernetes/
+│   │       ├── deployment.yaml
+│   │       └── ...
+│   ├── asset-management-service/
+│   │   ├── Dockerfile
+│   │   └── kubernetes/
+│   └── ...
+├── build.sbt
+├── README.md
+├── LICENSE
+└── .gitignore
 ```
 
-## Description of Key Directories and Files
-
-### Root Directory (`/investment-portfolio-manager-docs`)
-- **`README.md`**: Provides an overview of the project, including its purpose, key features, and instructions for navigating the documentation. It serves as the entry point for new users.
-- **`CONTRIBUTING.md`**: Outlines guidelines for contributing to the documentation, including how to submit issues, propose changes, and follow the contribution process.
-- **`CODE_OF_CONDUCT.md`**: Defines the expected behavior for contributors to ensure a collaborative and inclusive environment.
-- **`LICENSE.md`**: Specifies the licensing terms for the documentation (e.g., MIT, Apache 2.0).
-
-### `.github/`
-- **`ISSUE_TEMPLATE/bug_report.md`**: Template for reporting documentation bugs, including fields for description, steps to reproduce, and expected behavior.
-- **`ISSUE_TEMPLATE/feature_request.md`**: Template for proposing new documentation sections or enhancements.
-- **`PULL_REQUEST_TEMPLATE/pull_request_template.md`**: Template for pull requests, ensuring contributors provide context, changes, and testing details.
+## Directory Descriptions
 
 ### `docs/`
-This directory contains the core documentation, organized by category.
+- **Purpose**: Contains all documentation for the project, including architecture, API specifications, and development guides.
+- **Subdirectories**:
+  - **`architecture/domain_driven_design/`**: Stores DDD-related documents, such as `ubiquitous_language.md`, `bounded_contexts.md`, `domain_events.md`, and `folder_structure.md`, defining the domain model and event-driven interactions.
+  - **`architecture/microservices/`**: Contains microservice-specific documentation (e.g., `portfolio_management_service.md`), detailing responsibilities, domain models, APIs, and events.
+  - **`architecture/system_design/`**: Includes high-level system design documents (e.g., `technology_stack.md`, `overview.md`).
+  - **`api/`**: Stores API specifications for each microservice (e.g., `portfolio_management_api.md`).
+  - **`guides/`**: Contains guides for setup, development, and deployment (e.g., `setup.md`).
+- **Rationale**: Centralizes documentation to ensure alignment with DDD principles and developer clarity.
 
-#### `requirements/`
-- **`high_level_requirements.md`**: Details the core functionalities, global investment support, asset class management, risk management, reporting, integrations, user management, and non-functional requirements (as outlined previously).
-- **`non_functional_requirements.md`**: Focuses on scalability, security, reliability, and performance requirements.
-
-#### `architecture/`
-- **`overview.md`**: Provides a high-level overview of the system architecture, including microservices, DDD, EDA, and FP principles.
-- **`microservices/`**: Contains one Markdown file per microservice (e.g., `portfolio_management_service.md`), detailing its responsibilities, domain model, and interactions.
-- **`domain_driven_design/`**:
-  - **`bounded_contexts.md`**: Defines each bounded context and its scope.
-  - **`ubiquitous_language.md`**: Documents the shared terminology used across the system.
-  - **`domain_events.md`**: Lists key domain events (e.g., "TradeExecuted") and their triggers.
-- **`event_driven_architecture/`**:
-  - **`event_flows.md`**: Describes event flows between services (e.g., trade execution to portfolio update).
-  - **`event_sourcing.md`**: Explains event sourcing for auditability and state reconstruction.
-  - **`messaging.md`**: Details the messaging system (e.g., Kafka, RabbitMQ) and event formats.
-- **`functional_programming/`**:
-  - **`principles.md`**: Outlines FP principles (e.g., immutability, pure functions) used in the system.
-  - **`examples.md`**: Provides code snippets (e.g., in Scala or TypeScript) for key operations like performance calculations.
-  - **`best_practices.md`**: Documents FP best practices for maintainability and performance.
-
-#### `integration/`
-- **`external_systems.md`**: Describes integrations with market data providers, custodians, brokers, and banks.
-- **`api_contracts.md`**: Defines API specifications (e.g., REST, gRPC) for inter-service and external communication.
-- **`data_feeds.md`**: Details real-time data feeds for market prices and exchange rates.
-
-#### `development/`
-- **`setup.md`**: Guides developers on setting up the development environment.
-- **`coding_guidelines.md`**: Specifies coding standards, including FP conventions and microservice design principles.
-- **`testing.md`**: Outlines testing strategies (e.g., unit tests, integration tests).
-- **`deployment.md`**: Describes deployment processes using Docker and Kubernetes.
-
-#### `operations/`
-- **`monitoring.md`**: Details monitoring tools (e.g., Prometheus, Grafana) and health checks.
-- **`logging.md`**: Explains logging setup (e.g., ELK stack) for auditing and troubleshooting.
-- **`security.md`**: Coversਮ
-
-System: Covers authentication, authorization, encryption, and compliance requirements like GDPR and MiFID II.
+### `src/`
+- **Purpose**: Contains all source code for the application, organized by microservice to support the microservices architecture.
+- **Subdirectories** (per microservice, e.g., `portfolio-management-service/`):
+  - **`main/scala/`**: Production code, organized into subpackages:
+    - **`domain/`**: Domain models (e.g., `Portfolio.scala`, `Asset.scala`) implementing entities, aggregates, and value objects as per DDD.
+    - **`repository/`**: Repository interfaces and implementations (e.g., `PortfolioRepository.scala`) for data persistence (e.g., PostgreSQL via Slick).
+    - **`service/`**: Domain and application services (e.g., `PortfolioService.scala`, `PortfolioPerformanceCalculator.scala`) for business logic.
+    - **`api/`**: REST API routes and handlers (e.g., `PortfolioRoutes.scala`) using Akka HTTP.
+    - **`event/`**: Event handlers (e.g., `TradeExecutedHandler.scala`) for processing Kafka events.
+  - **`test/scala/`**: Unit and integration tests, mirroring the `main/scala/` structure (e.g., `PortfolioSpec.scala` using ScalaTest).
+- **Rationale**: Follows standard Scala project conventions (sbt structure) and DDD principles, ensuring modularity and testability. Each microservice is self-contained for independent development and deployment.
 
 ### `assets/`
-- **`diagrams/`**: Stores architecture diagrams, event flow diagrams, and domain model diagrams (e.g., PNG files).
-- **`templates/`**:
-  - **`report_template.md`**: Template for generating portfolio reports.
-  - **`dashboard_template.md`**: Template for customizable dashboard configurations.
+- **Purpose**: Stores static assets like diagrams and sample data.
+- **Subdirectories**:
+  - **`diagrams/`**: UML and architecture diagrams (e.g., `domain_model_diagram.png`) to visualize domain models and system architecture.
+  - **`data/`**: Sample datasets (e.g., `sample_portfolios.json`) for testing or seeding databases.
+- **Rationale**: Separates non-code assets from code and documentation for clarity.
 
-## Rationale for the Structure
-- **Logical Grouping**: The `docs/` directory is organized by functional areas (requirements, architecture, etc.) to align with the system’s development lifecycle.
-- **Scalability**: Subdirectories like `microservices/` and `assets/` allow for easy addition of new files as the system evolves.
-- **Collaboration**: GitHub-specific files (e.g., `CONTRIBUTING.md`, issue templates) streamline community contributions.
-- **Clarity**: Descriptive file names (e.g., `portfolio_management_service.md`) and a clear hierarchy improve navigation.
-- **Alignment with Architecture**: The structure reflects the microservices and DDD approach, with dedicated sections for each service and domain concept.
+### `docker/`
+- **Purpose**: Contains Docker and Kubernetes configurations for deploying microservices.
+- **Subdirectories** (per microservice, e.g., `portfolio-management-service/`):
+  - **`Dockerfile`**: Defines the container image for the microservice.
+  - **`kubernetes/`**: Kubernetes manifests (e.g., `deployment.yaml`) for orchestration.
+- **Rationale**: Supports containerized deployment in Kubernetes, aligning with the technology stack (AWS/GCP, Kubernetes).
 
-## Best Practices for GitHub Management
-- **Use Branches**: Maintain a `main` branch for production-ready documentation and feature branches for ongoing changes.
-- **Enable GitHub Pages**: Host the documentation as a static site using GitHub Pages for easy access.
-- **Automate Validation**: Use CI/CD tools (e.g., GitHub Actions) to validate Markdown syntax and links.
-- **Encourage Contributions**: Promote community contributions through clear guidelines in `CONTRIBUTING.md`.
+### Root-Level Files
+- **`build.sbt`**: Defines the project structure, dependencies (e.g., Akka, Slick, Kafka), and build settings for all microservices using sbt.
+  ```sbt
+  name := "investment-portfolio-manager"
+  version := "1.0"
+  scalaVersion := "2.13.12"
+  lazy val portfolioManagement = project.in(file("src/portfolio-management-service"))
+    .settings(
+      libraryDependencies ++= Seq(
+        "com.typesafe.akka" %% "akka-http" % "10.5.3",
+        "com.typesafe.akka" %% "akka-stream-kafka" % "4.0.2",
+        "com.lightbend.akka" %% "akka-persistence" % "2.6.20"
+      )
+    )
+  ```
+- **`README.md`**: Provides an overview of the project, setup instructions, and links to key documentation.
+- **`LICENSE`**: Specifies the project’s licensing terms.
+- **`.gitignore`**: Excludes build artifacts, logs, and temporary files from version control.
 
-## Summary
-This folder structure organizes the Investment Portfolio Manager application’s documentation into a clear, modular, and scalable hierarchy. It supports the microservices, DDD, EDA, and FP design by providing dedicated sections for each architectural component and ensures accessibility for developers, architects, and stakeholders. The structure leverages GitHub’s features for collaboration and maintenance, making it an effective documentation hub for the project.
+## Non-Functional Requirements Alignment
+| **Requirement** | **How Addressed** |
+|-----------------|-------------------|
+| **Scalability** | Microservice-specific folders in `src/` enable independent scaling via Kubernetes. |
+| **Reliability** | Separate `test/` directories per microservice ensure comprehensive testing with ScalaTest. |
+| **Maintainability** | Organized package structure (`domain/`, `repository/`, etc.) and FP principles in Scala improve code clarity. Documentation in `docs/` ensures alignment. |
+| **Security** | Code in `src/*/main/scala/service/` integrates with Keycloak and Vault for secure access. |
+| **Performance** | Akka-based implementations in `src/*/main/scala/api/` and `event/` optimize low-latency processing. |
+
+## Guidelines
+- **Code Organization**: Place all Scala code in `src/<microservice>/main/scala/`, organized by DDD layers (domain, repository, service, api, event). Tests go in `src/<microservice>/test/scala/`.
+- **Documentation**: Store DDD-related documents in `docs/architecture/domain_driven_design/`, microservice documentation in `docs/architecture/microservices/`, and API specs in `docs/api/`.
+- **Consistency**: Use the ubiquitous language (see `docs/architecture/domain_driven_design/ubiquitous_language.md`) in code and documentation for consistency.
+- **Extensibility**: Add new microservices as subdirectories under `src/` (e.g., `src/new-service/`) and corresponding documentation in `docs/architecture/microservices/`.
+- **Version Control**: Use GitHub pull requests to track changes to code and documentation, ensuring alignment.
 
 ## References
-- [GitHub Documentation Best Practices](https://docs.github.com/en/communities/documenting-your-project)
-- [Markdown Guide](https://www.markdownguide.org/)
-- [Organizing Technical Documentation in GitHub](https://www.atlassian.com/software/bitbucket/guides/technical-documentation)
+- [Scala Project Structure with sbt](https://www.scala-sbt.org/1.x/docs/Directories.html)
+- [Domain-Driven Design: Tackling Complexity in the Heart of Software](https://www.domainlanguage.com/ddd/)
+- [Microservices Architecture](https://microservices.io/)
