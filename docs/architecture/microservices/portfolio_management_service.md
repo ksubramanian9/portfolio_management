@@ -1,6 +1,6 @@
 # Portfolio Management Service
 
-The Portfolio Management Service is a core microservice in the Investment Portfolio Manager application, responsible for managing portfolios, including creation, updates, and asset allocation. Built using Scala, it aligns with microservices, Domain-Driven Design (DDD), Event-Driven Architecture (EDA), and Functional Programming (FP) paradigms. This document outlines the service’s responsibilities, domain model, event handling, API endpoints, integrations, and technical considerations, ensuring compliance with non-functional requirements like scalability, security, reliability, and performance.
+The Portfolio Management Service is a core microservice in the Investment Portfolio Manager application, responsible for managing portfolios, including creation, updates, and asset allocation. Built using **Java** with **Spring Boot**, it aligns with microservices, Domain-Driven Design (DDD), and Event-Driven Architecture (EDA) paradigms. This document outlines the service’s responsibilities, domain model, event handling, API endpoints, integrations, and technical considerations, ensuring compliance with non-functional requirements like scalability, security, reliability, and performance.
 
 ## Overview
 - **Bounded Context**: Portfolio Management
@@ -17,7 +17,7 @@ The Portfolio Management Service is a core microservice in the Investment Portfo
   - **Microservices**: Operates as an independent service, communicating via APIs and events.
 
 ## Domain Model
-The domain model follows DDD principles, using entities, aggregates, value objects, repositories, and domain services. It is implemented in Scala to leverage FP features like immutability and pure functions.
+The domain model follows DDD principles, using entities, aggregates, value objects, repositories, and domain services. It is implemented in Java, leveraging immutable data structures and clean code practices.
 
 - **Entity**: Portfolio
   - **Attributes**:
@@ -99,7 +99,7 @@ The service participates in EDA by subscribing to and publishing events via Apac
     ```
 
 ## API Endpoints
-The service exposes RESTful APIs (via Akka HTTP) for synchronous operations. All endpoints are secured with OAuth2 (via Keycloak).
+The service exposes RESTful APIs using **Spring WebFlux** for reactive, non-blocking operations. All endpoints are secured with OAuth2 (via Keycloak).
 
 | **Endpoint** | **Method** | **Description** | **Request Body** | **Response** |
 |--------------|------------|-----------------|------------------|--------------|
@@ -109,16 +109,15 @@ The service exposes RESTful APIs (via Akka HTTP) for synchronous operations. All
 | `/portfolios/user/{userId}` | GET | List portfolios for a user | - | `[{ "portfolioId": "string", "name": "string" }]` |
 | `/portfolios/{id}/value` | GET | Get portfolio value | - | `{ "amount": double, "currency": "string" }` |
 
-- **Example API Implementation** (Scala with Akka HTTP):
-  ```scala
-  import akka.http.scaladsl.server.Directives._
-  val route = path("portfolios" / Segment / "value") { portfolioId =>
-    get {
-      complete {
-        val portfolio = portfolioRepository.findById(portfolioId)
-        portfolio.map(p => PortfolioPerformanceCalculator.calculateValue(p, assetPrices))
+- **Example API Implementation** (Java with Spring WebFlux):
+  ```java
+  @RestController
+  public class PortfolioController {
+      @GetMapping("/portfolios/{id}/value")
+      public Mono<PortfolioValue> value(@PathVariable String id) {
+          return repository.findById(id)
+              .map(p -> calculator.calculateValue(p, assetPrices));
       }
-    }
   }
   ```
 
@@ -149,24 +148,24 @@ The Portfolio Management Service interacts with other services and external syst
     def * = (id, userId, name) <> (Portfolio.tupled, Portfolio.unapply)
   }
   ```
-- **Event Sourcing**: Uses EventStoreDB to store events like "PortfolioUpdated" for auditability, integrated with Akka Persistence.
-- **Security**: Implements OAuth2 (via Keycloak) for authentication and RBAC for user roles (e.g., investor, advisor).
-- **Scalability**: Deployed on Kubernetes with Akka Cluster for distributed processing.
-- **Performance**: Uses Akka Streams for efficient event processing and caching for frequent queries (e.g., portfolio value).
-- **Reliability**: Ensures fault tolerance via Akka’s actor supervision and Kafka’s replication.
+ - **Event Sourcing**: Uses EventStoreDB to store events like "PortfolioUpdated" for auditability, integrated with Axon Framework.
+ - **Security**: Implements OAuth2 (via Keycloak) for authentication and RBAC for user roles (e.g., investor, advisor).
+ - **Scalability**: Deployed on Kubernetes with Spring Boot’s reactive stack for distributed processing.
+ - **Performance**: Uses Project Reactor for efficient event processing and caching for frequent queries (e.g., portfolio value).
+ - **Reliability**: Ensures fault tolerance via Spring Boot’s error handling and Kafka’s replication.
 - **Maintainability**: FP principles (immutability, pure functions) and modular design simplify updates.
 
 ## Non-Functional Requirements Alignment
 | **Requirement** | **How Addressed** |
 |-----------------|-------------------|
-| **Scalability** | Akka Cluster and Kubernetes scale the service to handle large portfolios and high request volumes. |
+| **Scalability** | Spring Boot’s reactive stack and Kubernetes scale the service to handle large portfolios and high request volumes. |
 | **Security** | Keycloak and encryption (AES-256, TLS) ensure compliance with GDPR, MiFID II, and PCI DSS. |
-| **Reliability** | Akka supervision and PostgreSQL ACID transactions ensure 99.9% uptime. |
-| **Performance** | Akka Streams and caching optimize real-time portfolio calculations. |
+| **Reliability** | Spring Boot error handling and PostgreSQL ACID transactions ensure 99.9% uptime. |
+| **Performance** | Project Reactor and caching optimize real-time portfolio calculations. |
 | **Maintainability** | FP principles and clear DDD modeling improve code clarity and testability.
 
 ## References
-- [Akka HTTP for REST APIs](https://doc.akka.io/docs/akka-http/current/)
-- [Slick for Database Access](http://slick.lightbend.com/)
-- [Apache Kafka with Scala](https://kafka.apache.org/documentation/#scala)
-- [DDD with Scala](https://www.lightbend.com/blog/domain-driven-design-with-scala)
+- [Spring WebFlux Documentation](https://docs.spring.io/spring-framework/docs/current/reference/html/web-reactive.html)
+- [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
+- [Apache Kafka](https://kafka.apache.org/documentation/)
+- [DDD with Spring](https://spring.io/understanding/domain-driven-design)

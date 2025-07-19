@@ -1,6 +1,6 @@
 # Folder Structure
 
-The folder structure of the Investment Portfolio Manager application’s GitHub repository is designed to organize code, documentation, and supporting assets for a microservices-based architecture built with Scala, adhering to Domain-Driven Design (DDD), Event-Driven Architecture (EDA), and Functional Programming (FP) principles. The structure separates source code (`src/`), documentation (`docs/`), assets (`assets/`), and deployment configurations (`docker/`), ensuring modularity, maintainability, and alignment with non-functional requirements like scalability, reliability, and security. This document describes the repository’s organization, including where code for each microservice is stored, and aligns with the ubiquitous language, bounded contexts, and domain events defined in related documentation.
+The folder structure of the Investment Portfolio Manager application’s GitHub repository is designed to organize code, documentation, and supporting assets for a microservices-based architecture built with **Java** and **Spring Boot**, adhering to Domain-Driven Design (DDD) and Event-Driven Architecture (EDA) principles. The structure separates source code (`src/`), documentation (`docs/`), assets (`assets/`), and deployment configurations (`docker/`), ensuring modularity, maintainability, and alignment with non-functional requirements like scalability, reliability, and security. This document describes the repository’s organization, including where code for each microservice is stored, and aligns with the ubiquitous language, bounded contexts, and domain events defined in related documentation.
 
 ## Repository Structure
 
@@ -49,20 +49,20 @@ investment-portfolio-manager/
 │   │   │   │   │   ├── PortfolioRepository.scala
 │   │   │   │   │   └── ...
 │   │   │   │   ├── service/
-│   │   │   │   │   ├── PortfolioService.scala
-│   │   │   │   │   ├── PortfolioPerformanceCalculator.scala
+│   │   │   │   │   ├── PortfolioService.java
+│   │   │   │   │   ├── PortfolioPerformanceCalculator.java
 │   │   │   │   │   └── ...
 │   │   │   │   ├── api/
-│   │   │   │   │   ├── PortfolioRoutes.scala
+│   │   │   │   │   ├── PortfolioController.java
 │   │   │   │   │   └── ...
 │   │   │   │   └── event/
-│   │   │   │       ├── TradeExecutedHandler.scala
+│   │   │   │       ├── TradeExecutedHandler.java
 │   │   │   │       ├── PortfolioUpdatedHandler.scala
 │   │   │   │       └── ...
 │   │   └── test/
 │   │       ├── scala/
 │   │       │   ├── domain/
-│   │       │   │   ├── PortfolioSpec.scala
+│   │       │   │   ├── PortfolioTest.java
 │   │       │   │   └── ...
 │   │       │   ├── repository/
 │   │       │   │   ├── PortfolioRepositorySpec.scala
@@ -185,7 +185,7 @@ investment-portfolio-manager/
 │   │   ├── Dockerfile
 │   │   └── kubernetes/
 │   └── ...
-├── build.sbt
+├── pom.xml
 ├── README.md
 ├── LICENSE
 └── .gitignore
@@ -210,10 +210,10 @@ investment-portfolio-manager/
     - **`domain/`**: Domain models (e.g., `Portfolio.scala`, `Asset.scala`) implementing entities, aggregates, and value objects as per DDD.
     - **`repository/`**: Repository interfaces and implementations (e.g., `PortfolioRepository.scala`) for data persistence (e.g., PostgreSQL via Slick).
     - **`service/`**: Domain and application services (e.g., `PortfolioService.scala`, `PortfolioPerformanceCalculator.scala`) for business logic.
-    - **`api/`**: REST API routes and handlers (e.g., `PortfolioRoutes.scala`) using Akka HTTP.
+    - **`api/`**: REST API routes and handlers (e.g., `PortfolioRoutes.scala`) using Spring WebFlux.
     - **`event/`**: Event handlers (e.g., `TradeExecutedHandler.scala`) for processing Kafka events.
-  - **`test/scala/`**: Unit and integration tests, mirroring the `main/scala/` structure (e.g., `PortfolioSpec.scala` using ScalaTest).
-- **Rationale**: Follows standard Scala project conventions (sbt structure) and DDD principles, ensuring modularity and testability. Each microservice is self-contained for independent development and deployment.
+  - **`test/java/`**: Unit and integration tests, mirroring the `main/scala/` structure (e.g., `PortfolioSpec.scala` using JUnit 5).
+- **Rationale**: Follows standard Maven project conventions (Maven structure) and DDD principles, ensuring modularity and testability. Each microservice is self-contained for independent development and deployment.
 
 ### `assets/`
 - **Purpose**: Stores static assets like diagrams and sample data.
@@ -230,19 +230,11 @@ investment-portfolio-manager/
 - **Rationale**: Supports containerized deployment in Kubernetes, aligning with the technology stack (AWS/GCP, Kubernetes).
 
 ### Root-Level Files
-- **`build.sbt`**: Defines the project structure, dependencies (e.g., Akka, Slick, Kafka), and build settings for all microservices using sbt.
-  ```sbt
-  name := "investment-portfolio-manager"
-  version := "1.0"
-  scalaVersion := "2.13.12"
-  lazy val portfolioManagement = project.in(file("src/portfolio-management-service"))
-    .settings(
-      libraryDependencies ++= Seq(
-        "com.typesafe.akka" %% "akka-http" % "10.5.3",
-        "com.typesafe.akka" %% "akka-stream-kafka" % "4.0.2",
-        "com.lightbend.akka" %% "akka-persistence" % "2.6.20"
-      )
-    )
+- **`pom.xml`**: Defines the project structure and dependencies (Spring Boot, Spring Cloud Stream, Axon Framework) using Maven.
+  ```xml
+  <project>
+      <!-- dependencies and plugins -->
+  </project>
   ```
 - **`README.md`**: Provides an overview of the project, setup instructions, and links to key documentation.
 - **`LICENSE`**: Specifies the project’s licensing terms.
@@ -252,19 +244,19 @@ investment-portfolio-manager/
 | **Requirement** | **How Addressed** |
 |-----------------|-------------------|
 | **Scalability** | Microservice-specific folders in `src/` enable independent scaling via Kubernetes. |
-| **Reliability** | Separate `test/` directories per microservice ensure comprehensive testing with ScalaTest. |
-| **Maintainability** | Organized package structure (`domain/`, `repository/`, etc.) and FP principles in Scala improve code clarity. Documentation in `docs/` ensures alignment. |
-| **Security** | Code in `src/*/main/scala/service/` integrates with Keycloak and Vault for secure access. |
-| **Performance** | Akka-based implementations in `src/*/main/scala/api/` and `event/` optimize low-latency processing. |
+| **Reliability** | Separate `test/` directories per microservice ensure comprehensive testing with JUnit 5. |
+| **Maintainability** | Organized package structure (`domain/`, `repository/`, etc.) and FP principles in Java improve code clarity. Documentation in `docs/` ensures alignment. |
+| **Security** | Code in `src/*/main/java/service/` integrates with Keycloak and Vault for secure access. |
+| **Performance** | Spring-based implementations in `src/*/main/java/api/` and `event/` optimize low-latency processing. |
 
 ## Guidelines
-- **Code Organization**: Place all Scala code in `src/<microservice>/main/scala/`, organized by DDD layers (domain, repository, service, api, event). Tests go in `src/<microservice>/test/scala/`.
+- **Code Organization**: Place all Java code in `src/<microservice>/main/java/`, organized by DDD layers (domain, repository, service, api, event). Tests go in `src/<microservice>/test/java/`.
 - **Documentation**: Store DDD-related documents in `docs/architecture/domain_driven_design/`, microservice documentation in `docs/architecture/microservices/`, and API specs in `docs/api/`.
 - **Consistency**: Use the ubiquitous language (see `docs/architecture/domain_driven_design/ubiquitous_language.md`) in code and documentation for consistency.
 - **Extensibility**: Add new microservices as subdirectories under `src/` (e.g., `src/new-service/`) and corresponding documentation in `docs/architecture/microservices/`.
 - **Version Control**: Use GitHub pull requests to track changes to code and documentation, ensuring alignment.
 
 ## References
-- [Scala Project Structure with sbt](https://www.scala-sbt.org/1.x/docs/Directories.html)
+- [Java Project Structure with Maven](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html)
 - [Domain-Driven Design: Tackling Complexity in the Heart of Software](https://www.domainlanguage.com/ddd/)
 - [Microservices Architecture](https://microservices.io/)

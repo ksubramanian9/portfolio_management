@@ -1,6 +1,6 @@
 # Portfolio Management Service Specification
 
-The Portfolio Management Service is a core microservice in the Investment Portfolio Manager application, responsible for managing portfolios within the Portfolio Management bounded context. It handles the creation, updating, and tracking of portfolios, including asset allocations and total valuation, ensuring alignment with the domain model and ubiquitous language (see `ubiquitous_language.md`). Built using Scala with Domain-Driven Design (DDD), Event-Driven Architecture (EDA), and Functional Programming (FP) principles, the service leverages Akka for HTTP APIs and event processing, Slick for PostgreSQL persistence, and Apache Kafka for event-driven communication. It integrates with other microservices (e.g., Transaction Management, Asset Management) to support real-time updates, regulatory compliance (e.g., GDPR, MiFID II), and non-functional requirements like scalability, reliability, and performance.
+The Portfolio Management Service is a core microservice in the Investment Portfolio Manager application, responsible for managing portfolios within the Portfolio Management bounded context. It handles the creation, updating, and tracking of portfolios, including asset allocations and total valuation, ensuring alignment with the domain model and ubiquitous language (see `ubiquitous_language.md`). Built using **Java** with Spring Boot, following Domain-Driven Design (DDD) and Event-Driven Architecture (EDA) principles, the service leverages Spring WebFlux for HTTP APIs and reactive event processing, Spring Data JPA for PostgreSQL persistence, and Apache Kafka for event-driven communication. It integrates with other microservices (e.g., Transaction Management, Asset Management) to support real-time updates, regulatory compliance (e.g., GDPR, MiFID II), and non-functional requirements like scalability, reliability, and performance.
 
 ## Responsibilities
 - **Portfolio Management**:
@@ -27,7 +27,7 @@ The Portfolio Management Service operates within the **Portfolio Management** bo
 - **Performance Calculation, Risk Management, Reporting**: Publishes `PortfolioUpdated` and `PortfolioRebalanced` to trigger downstream calculations and reports.
 
 ## Domain Model
-The domain model is implemented as immutable Scala case classes, adhering to DDD and FP principles. Key entities and value objects are defined below, aligned with the ubiquitous language.
+The domain model is implemented as immutable Java records, adhering to DDD and FP principles. Key entities and value objects are defined below, aligned with the ubiquitous language.
 
 ### Entities and Aggregates
 - **Portfolio (Aggregate Root)**:
@@ -84,7 +84,7 @@ The domain model is implemented as immutable Scala case classes, adhering to DDD
     ```
 
 ## API Endpoints
-The service exposes RESTful APIs using Akka HTTP, hosted at `/portfolios`. All endpoints are secured with Keycloak for authentication and authorization.
+The service exposes RESTful APIs using Spring WebFlux, hosted at `/portfolios`. All endpoints are secured with Keycloak for authentication and authorization.
 
 | **Endpoint** | **Method** | **Description** | **Request Body** | **Response** |
 |--------------|------------|-----------------|------------------|--------------|
@@ -159,7 +159,7 @@ case class UpdatePortfolioRequest(name: String)
 ```
 
 ## Event Handling
-The service subscribes to and publishes domain events (see `domain_events.md`) via Apache Kafka, with event sourcing in EventStoreDB for auditability. All event handlers are implemented in Scala using Akka Streams for reliability.
+The service subscribes to and publishes domain events (see `domain_events.md`) via Apache Kafka, with event sourcing in EventStoreDB for auditability. All event handlers are implemented in Java using Project Reactor for reliability.
 
 ### Subscribed Events
 | **Event** | **Source** | **Action** |
@@ -201,7 +201,7 @@ object TradeExecutedHandler {
   }
 
   private def publishPortfolioUpdated(portfolio: Portfolio): Unit = {
-    // Implementation using Akka Streams Kafka Producer
+    // Implementation using Spring Cloud Stream Kafka Producer
   }
 }
 ```
@@ -263,15 +263,15 @@ object TradeExecutedHandler {
 - **Transaction Management Service**: Subscribes to `TradeExecuted` and `DividendPaid` events via Kafka.
 - **Integration Service**: Subscribes to `CustodianDataSynced` for external holding updates and `OrderPlaced` for trade initiation.
 - **User Management Service**: Queries `/users/{id}` for user validation and subscribes to `UserCreated` for portfolio initialization.
-- **Kafka**: Uses Akka Streams Kafka for event publishing/subscribing (topics: `trade-executed`, `portfolio-updated`, etc.).
+- **Kafka**: Uses Spring Cloud Stream Kafka for event publishing/subscribing (topics: `trade-executed`, `portfolio-updated`, etc.).
 - **EventStoreDB**: Stores events for auditability and state reconstruction.
 
 ## Non-Functional Requirements
 | **Requirement** | **How Addressed** |
 |-----------------|-------------------|
-| **Scalability** | Akka HTTP and Kafka scale horizontally in Kubernetes. Multi-project sbt build supports independent microservice scaling. |
+| **Scalability** | Spring WebFlux and Kafka scale horizontally in Kubernetes. Maven build supports independent microservice scaling. |
 | **Reliability** | Event sourcing with EventStoreDB ensures auditability. Idempotent event handlers prevent duplicate processing. |
-| **Performance** | Akka Streams for low-latency event processing. Slick optimizes database queries. |
+| **Performance** | Project Reactor for low-latency event processing. Spring Data optimizes database queries. |
 | **Security** | Keycloak integration for authentication/authorization. TLS for API and Kafka communication. |
 | **Maintainability** | FP principles (immutable case classes) and DDD structure (domain, repository, service) ensure clean code. Tests in `src/portfolio-management-service/test/`. |
 | **Compliance** | Event sourcing and compliance rule validation (via `ComplianceRuleUpdated`) support GDPR, MiFID II, and GIPS. |
@@ -285,14 +285,14 @@ object TradeExecutedHandler {
 
 ## Implementation Guidelines
 - **Code Location**: Store code in `src/portfolio-management-service/main/scala/` with subpackages (`domain/`, `repository/`, `service/`, `api/`, `event/`).
-- **Testing**: Write unit tests (e.g., `PortfolioServiceSpec.scala`) in `src/portfolio-management-service/test/scala/` using ScalaTest and ScalaMock.
-- **Dependencies**: Managed in `build.sbt` (Akka, Slick, Kafka, etc.).
-- **Deployment**: Package as a JAR using `sbt portfolioManagement/package` and deploy via Docker/Kubernetes (`docker/portfolio-management-service/`).
+- **Testing**: Write unit tests (e.g., `PortfolioServiceTest.java`) in `src/test/java/` using JUnit 5 and Mockito.
+- **Dependencies**: Managed in `pom.xml` (Spring Boot, Spring Data, Kafka, etc.).
+- **Deployment**: Package as a JAR using `mvn package` and deploy via Docker/Kubernetes (`docker/portfolio-management-service/`).
 - **Consistency**: Use terms from `ubiquitous_language.md` (e.g., Portfolio, Asset) in code and documentation.
 
 ## References
 - [Domain-Driven Design: Tackling Complexity in the Heart of Software](https://www.domainlanguage.com/ddd/)
-- [Akka HTTP Documentation](https://doc.akka.io/docs/akka-http/current/)
-- [Slick Documentation](https://scala-slick.org/doc/3.5.1/)
+- [Spring WebFlux Documentation](https://docs.spring.io/spring-framework/docs/current/reference/html/web-reactive.html)
+- [Spring Data Documentation](https://spring.io/projects/spring-data)
 - [Apache Kafka Documentation](https://kafka.apache.org/documentation/)
 - [EventStoreDB Documentation](https://www.eventstore.com/docs/)

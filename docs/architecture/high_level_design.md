@@ -173,7 +173,7 @@ FP principles enhance reliability and testability:
 | Data Consistency                  | Implement Saga pattern and event sourcing for eventual consistency.           |
 | Event Ordering                    | Ensure idempotent events and use Saga for ordered processing.                 |
 | FP Performance                    | Use persistent data structures to reduce memory overhead.                     |
-| Developer Learning Curve          | Use FP-supporting languages like Scala or TypeScript; provide training.       |
+| Developer Learning Curve          | Use mainstream languages like Java with Spring Boot; provide training.       |
 | Regulatory Compliance             | Incorporate configurable compliance checks and audit trails.                  |
 
 ## Implementation Strategies
