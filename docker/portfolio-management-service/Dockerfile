@@ -1,5 +1,5 @@
 # Stage 0: build and test the application
-FROM maven:3.9.6-eclipse-temurin-17 as builder
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
 WORKDIR /build
 COPY pom.xml .
 RUN mvn -q dependency:resolve

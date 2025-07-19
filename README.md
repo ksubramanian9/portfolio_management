@@ -15,7 +15,7 @@ container:
 docker build -f docker/portfolio-management-service/Dockerfile -t portfolio-management .
 
 # Start the container with the packaged application
-docker run --rm portfolio-management
+docker run --rm -p 8080:8080 portfolio-management
 ```
 
 Additional documentation can be found in the [docs/](docs/) directory.
