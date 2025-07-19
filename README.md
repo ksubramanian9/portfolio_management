@@ -3,7 +3,7 @@
 Investment Portfolio Management
 
 ## Building
-This project uses [sbt](https://www.scala-sbt.org/) to build the microservices. Run `sbt compile` or `sbt test` from the repository root.
+This project uses [Maven](https://maven.apache.org/) to build the service. Run `mvn package` or `mvn test` from the repository root.
 
 ### Building with Docker
 The repository includes a Dockerfile that builds the service, runs the tests,

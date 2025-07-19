@@ -1,9 +1,5 @@
-# sbt build directories
-target/
-project/target/
-project/project/
-lib_managed/
-src_managed/
+# Maven and build directories
+/target/
 
 # IDEs
 .idea/
@@ -13,4 +9,3 @@ src_managed/
 
 # OS files
 .DS_Store
-

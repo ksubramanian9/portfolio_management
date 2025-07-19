@@ -202,7 +202,7 @@ The bounded contexts interact through APIs, events, or shared models, as defined
 | Integration | All contexts | Events, APIs | Publishes `MarketDataUpdated`, `CustodianDataSynced`. |
 
 - **Patterns Used**:
-  - **Open Host Service (OHS)**: Each context exposes a public API (e.g., REST via Akka HTTP) for synchronous interactions.
+  - **Open Host Service (OHS)**: Each context exposes a public API (e.g., REST via Spring WebFlux) for synchronous interactions.
   - **Published Language (PL)**: Events (e.g., `TradeExecuted`) use a standardized format across contexts, aligned with the ubiquitous language.
   - **Customer/Supplier**: Upstream contexts (e.g., Integration) supply data to downstream contexts (e.g., Asset Management).
 

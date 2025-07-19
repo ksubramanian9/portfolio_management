@@ -1,9 +1,9 @@
 ## Overview
-The domain_events.md document outlines the domain events used in the Investment Portfolio Manager application, which facilitate communication between microservices and enable real-time updates in response to business activities. Aligned with DDD and EDA principles, these events represent significant changes in the domain (e.g., a trade being executed or an asset price updating). Implemented in Scala with FP principles, the events ensure immutability and reliability. The document details each event’s structure, purpose, and interactions across bounded contexts, supporting non-functional requirements like scalability, reliability, and compliance.
+The domain_events.md document outlines the domain events used in the Investment Portfolio Manager application, which facilitate communication between microservices and enable real-time updates in response to business activities. Aligned with DDD and EDA principles, these events represent significant changes in the domain (e.g., a trade being executed or an asset price updating). Implemented in Java with reactive principles, the events ensure immutability and reliability. The document details each event’s structure, purpose, and interactions across bounded contexts, supporting non-functional requirements like scalability, reliability, and compliance.
 
 # Domain Events
 
-Domain events are a core component of the Investment Portfolio Manager application’s Event-Driven Architecture (EDA), capturing significant business activities within the domain as defined by Domain-Driven Design (DDD). These events enable asynchronous communication between microservices, ensuring loose coupling and real-time responsiveness. Implemented in Scala with Functional Programming (FP) principles (e.g., immutability), events are published and consumed via Apache Kafka and stored in EventStoreDB for auditability. This document lists all 16 domain events, their structure, purpose, and interactions across bounded contexts, supporting non-functional requirements like scalability, reliability, performance, and regulatory compliance (e.g., GDPR, MiFID II, GIPS).
+Domain events are a core component of the Investment Portfolio Manager application’s Event-Driven Architecture (EDA), capturing significant business activities within the domain as defined by Domain-Driven Design (DDD). These events enable asynchronous communication between microservices, ensuring loose coupling and real-time responsiveness. Implemented in Java with Project Reactor for non-blocking handling, events are published and consumed via Apache Kafka and stored in EventStoreDB for auditability. This document lists all 16 domain events, their structure, purpose, and interactions across bounded contexts, supporting non-functional requirements like scalability, reliability, performance, and regulatory compliance (e.g., GDPR, MiFID II, GIPS).
 
 ## Purpose
 - Capture significant business activities (e.g., trade execution, price updates, rebalancing) as immutable events.
@@ -13,7 +13,7 @@ Domain events are a core component of the Investment Portfolio Manager applicati
 
 ## Domain Events
 
-Each event is defined with its name, structure, purpose, publishing context, subscribing contexts, and an example implementation in Scala. Events are published to Apache Kafka topics and stored in EventStoreDB for compliance and auditing.
+Each event is defined with its name, structure, purpose, publishing context, subscribing contexts, and an example implementation in Java. Events are published to Apache Kafka topics and stored in EventStoreDB for compliance and auditing.
 
 ### 1. TradeExecuted
 - **Purpose**: Indicates that a buy or sell order has been successfully executed, triggering updates to portfolios or risk assessments.
@@ -390,12 +390,12 @@ Each event is defined with its name, structure, purpose, publishing context, sub
 - **Kafka Topic**: `portfolio-rebalanced`
 
 ## Event Handling Guidelines
-- **Immutability**: Events are implemented as immutable case classes in Scala, ensuring reliability and thread safety.
+- **Immutability**: Events are implemented as immutable value objects in Java, ensuring reliability and thread safety.
 - **Event Sourcing**: Events are stored in EventStoreDB for auditability and state reconstruction, critical for compliance (e.g., MiFID II, GIPS).
 - **Idempotency**: Event handlers are designed to handle duplicate events gracefully, using `transactionId`, `orderId`, or `eventId` for deduplication.
 - **Schema Consistency**: Event structures align with the ubiquitous language (see `ubiquitous_language.md`) and are versioned to support evolution.
 - **Kafka Configuration**: Events are published to specific Kafka topics with partitioning for scalability and replication for reliability.
-- **Error Handling**: Use Akka’s supervision strategies to manage failures in event processing.
+- **Error Handling**: Use Spring Boot’s error handling mechanisms to manage failures in event processing.
 
 ## Example Event Flow
 1. A user submits a trade order:
@@ -408,9 +408,9 @@ Each event is defined with its name, structure, purpose, publishing context, sub
 ## Non-Functional Requirements Alignment
 | **Requirement** | **How Addressed** |
 |-----------------|-------------------|
-| **Scalability** | Kafka’s partitioning and Akka Streams handle high event volumes across microservices. |
+| **Scalability** | Kafka’s partitioning and Project Reactor handle high event volumes across microservices. |
 | **Reliability** | Kafka replication and EventStoreDB ensure event delivery and auditability. |
-| **Performance** | Akka Streams and Kafka optimize low-latency event processing. |
+| **Performance** | Project Reactor and Kafka optimize low-latency event processing. |
 | **Security** | Events are encrypted in transit (TLS) and access-controlled via Keycloak. |
 | **Maintainability** | Immutable event structures and clear documentation simplify updates. |
 
@@ -418,7 +418,7 @@ Each event is defined with its name, structure, purpose, publishing context, sub
 - [Domain-Driven Design: Tackling Complexity in the Heart of Software](https://www.domainlanguage.com/ddd/)
 - [Event-Driven Architecture with Apache Kafka](https://kafka.apache.org/documentation/#introduction)
 - [Event Sourcing with EventStoreDB](https://www.eventstore.com/docs/)
-- [Akka Streams for Event Processing](https://doc.akka.io/docs/akka/current/stream/)
+- [Project Reactor](https://projectreactor.io/)
 
 ## Additional Notes:
 
