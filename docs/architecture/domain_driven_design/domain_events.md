@@ -29,8 +29,8 @@ Each event is defined with its name, structure, purpose, publishing context, sub
   - `currency: Currency` (currency of the trade)
   - `timestamp: Date` (execution time)
 - **Example**:
-  ```scala
-  case class TradeExecuted(
+  ```java
+  public record TradeExecuted(
     transactionId: String,
     portfolioId: String,
     assetId: String,
@@ -57,8 +57,8 @@ Each event is defined with its name, structure, purpose, publishing context, sub
   - `currency: Currency` (currency of the price)
   - `timestamp: Date` (time of price update)
 - **Example**:
-  ```scala
-  case class PriceUpdated(
+  ```java
+  public record PriceUpdated(
     assetId: String,
     price: Double,
     currency: Currency,
@@ -83,8 +83,8 @@ Each event is defined with its name, structure, purpose, publishing context, sub
   - `currency: Currency` (currency of the dividend)
   - `timestamp: Date` (payment time)
 - **Example**:
-  ```scala
-  case class DividendPaid(
+  ```java
+  public record DividendPaid(
     transactionId: String,
     portfolioId: String,
     assetId: String,
@@ -107,13 +107,13 @@ Each event is defined with its name, structure, purpose, publishing context, sub
   - `newValue: PortfolioValue` (updated portfolio value)
   - `timestamp: Date` (update time)
 - **Example**:
-  ```scala
-  case class PortfolioUpdated(
+  ```java
+  public record PortfolioUpdated(
     portfolioId: String,
     newValue: PortfolioValue,
     timestamp: Date
   )
-  case class PortfolioValue(amount: Double, currency: Currency)
+  public record PortfolioValue(amount: Double, currency: Currency)
   ```
 - **Actions**:
   - Performance Calculation: Recalculates performance metrics.
@@ -131,8 +131,8 @@ Each event is defined with its name, structure, purpose, publishing context, sub
   - `benchmarkReturn: Double` (benchmark return for comparison)
   - `timestamp: Date` (calculation time)
 - **Example**:
-  ```scala
-  case class PerformanceCalculated(
+  ```java
+  public record PerformanceCalculated(
     portfolioId: String,
     totalReturn: Double,
     benchmarkReturn: Double,
@@ -152,8 +152,8 @@ Each event is defined with its name, structure, purpose, publishing context, sub
   - `riskScore: Double` (updated risk score)
   - `timestamp: Date` (assessment time)
 - **Example**:
-  ```scala
-  case class RiskAssessmentUpdated(
+  ```java
+  public record RiskAssessmentUpdated(
     portfolioId: String,
     riskScore: Double,
     timestamp: Date
@@ -173,8 +173,8 @@ Each event is defined with its name, structure, purpose, publishing context, sub
   - `description: String` (details of the violation)
   - `timestamp: Date` (detection time)
 - **Example**:
-  ```scala
-  case class ComplianceViolationDetected(
+  ```java
+  public record ComplianceViolationDetected(
     portfolioId: String,
     ruleId: String,
     description: String,
@@ -196,8 +196,8 @@ Each event is defined with its name, structure, purpose, publishing context, sub
   - `reportType: String` (e.g., "Performance", "Tax")
   - `timestamp: Date` (generation time)
 - **Example**:
-  ```scala
-  case class ReportGenerated(
+  ```java
+  public record ReportGenerated(
     reportId: String,
     portfolioId: String,
     reportType: String,
@@ -217,8 +217,8 @@ Each event is defined with its name, structure, purpose, publishing context, sub
   - `role: String` (e.g., "Investor", "Advisor")
   - `timestamp: Date` (creation time)
 - **Example**:
-  ```scala
-  case class UserCreated(
+  ```java
+  public record UserCreated(
     userId: String,
     role: String,
     timestamp: Date
@@ -238,8 +238,8 @@ Each event is defined with its name, structure, purpose, publishing context, sub
   - `currency: Currency` (currency of the value)
   - `timestamp: Date` (update time)
 - **Example**:
-  ```scala
-  case class MarketDataUpdated(
+  ```java
+  public record MarketDataUpdated(
     assetId: String,
     value: Double,
     currency: Currency,
@@ -256,16 +256,16 @@ Each event is defined with its name, structure, purpose, publishing context, sub
 - **Bounded Context (Subscribers)**: Portfolio Management
 - **Structure**:
   - `portfolioId: String` (portfolio being synced)
-  - `assets: List[Asset]` (updated holdings)
+  - `assets: List<Asset>` (updated holdings)
   - `timestamp: Date` (sync time)
 - **Example**:
-  ```scala
-  case class CustodianDataSynced(
+  ```java
+  public record CustodianDataSynced(
     portfolioId: String,
-    assets: List[Asset],
+    assets: List<Asset>,
     timestamp: Date
   )
-  case class Asset(assetId: String, quantity: Double, currency: Currency)
+  public record Asset(assetId: String, quantity: Double, currency: Currency)
   ```
 - **Actions**:
   - Portfolio Management: Updates portfolio assets to match custodian data.
@@ -278,14 +278,14 @@ Each event is defined with its name, structure, purpose, publishing context, sub
 - **Structure**:
   - `assetId: String` (asset affected by the action)
   - `actionType: String` (e.g., "STOCK_SPLIT", "MERGER")
-  - `details: Map[String, String]` (e.g., {"ratio": "2:1"})
+  - `details: Map<String, String>` (e.g., {"ratio": "2:1"})
   - `timestamp: Date` (action time)
 - **Example**:
-  ```scala
-  case class CorporateActionApplied(
+  ```java
+  public record CorporateActionApplied(
     assetId: String,
     actionType: String,
-    details: Map[String, String],
+    details: Map<String, String>,
     timestamp: Date
   )
   ```
@@ -306,8 +306,8 @@ Each event is defined with its name, structure, purpose, publishing context, sub
   - `orderType: String` (e.g., "BUY", "SELL")
   - `timestamp: Date` (order submission time)
 - **Example**:
-  ```scala
-  case class OrderPlaced(
+  ```java
+  public record OrderPlaced(
     orderId: String,
     portfolioId: String,
     assetId: String,
@@ -330,8 +330,8 @@ Each event is defined with its name, structure, purpose, publishing context, sub
   - `permissions: List[String]` (updated permissions)
   - `timestamp: Date` (update time)
 - **Example**:
-  ```scala
-  case class UserUpdated(
+  ```java
+  public record UserUpdated(
     userId: String,
     role: String,
     permissions: List[String],
@@ -350,14 +350,14 @@ Each event is defined with its name, structure, purpose, publishing context, sub
 - **Structure**:
   - `ruleId: String` (unique identifier for the rule)
   - `description: String` (rule details)
-  - `constraints: Map[String, String]` (e.g., {"maxEquityExposure": "50%"})
+  - `constraints: Map<String, String>` (e.g., {"maxEquityExposure": "50%"})
   - `timestamp: Date` (update time)
 - **Example**:
-  ```scala
-  case class ComplianceRuleUpdated(
+  ```java
+  public record ComplianceRuleUpdated(
     ruleId: String,
     description: String,
-    constraints: Map[String, String],
+    constraints: Map<String, String>,
     timestamp: Date
   )
   ```
@@ -375,13 +375,13 @@ Each event is defined with its name, structure, purpose, publishing context, sub
   - `newAllocations: Map[String, Percentage]` (updated allocations, e.g., {"Equities": 30%})
   - `timestamp: Date` (rebalance time)
 - **Example**:
-  ```scala
-  case class PortfolioRebalanced(
+  ```java
+  public record PortfolioRebalanced(
     portfolioId: String,
     newAllocations: Map[String, Percentage],
     timestamp: Date
   )
-  case class Percentage(value: Double)
+  public record Percentage(value: Double)
   ```
 - **Actions**:
   - Performance Calculation: Recalculates performance metrics.

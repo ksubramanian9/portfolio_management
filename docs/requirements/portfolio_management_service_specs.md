@@ -39,8 +39,8 @@ The domain model is implemented as immutable Java records, adhering to DDD and F
     - `name: String` (e.g., "Retirement Fund")
     - `createdAt: Date` (creation timestamp)
   - Example:
-    ```scala
-    case class Portfolio(portfolioId: String, userId: String, assets: List[Asset], name: String, createdAt: Date)
+    ```java
+    public record Portfolio(portfolioId: String, userId: String, assets: List[Asset], name: String, createdAt: Date)
     ```
 
 - **Asset**:
@@ -50,8 +50,8 @@ The domain model is implemented as immutable Java records, adhering to DDD and F
     - `quantity: Double` (number of units held)
     - `currency: Currency` (valuation currency)
   - Example:
-    ```scala
-    case class Asset(assetId: String, quantity: Double, currency: Currency)
+    ```java
+    public record Asset(assetId: String, quantity: Double, currency: Currency)
     ```
 
 ### Value Objects
@@ -60,8 +60,8 @@ The domain model is implemented as immutable Java records, adhering to DDD and F
   - Attributes:
     - `code: String` (e.g., "USD")
   - Example:
-    ```scala
-    case class Currency(code: String)
+    ```java
+    public record Currency(code: String)
     ```
 
 - **PortfolioValue**:
@@ -70,8 +70,8 @@ The domain model is implemented as immutable Java records, adhering to DDD and F
     - `amount: Double` (value in currency)
     - `currency: Currency` (valuation currency)
   - Example:
-    ```scala
-    case class PortfolioValue(amount: Double, currency: Currency)
+    ```java
+    public record PortfolioValue(amount: Double, currency: Currency)
     ```
 
 - **Percentage**:
@@ -79,8 +79,8 @@ The domain model is implemented as immutable Java records, adhering to DDD and F
   - Attributes:
     - `value: Double` (percentage, 0-100)
   - Example:
-    ```scala
-    case class Percentage(value: Double)
+    ```java
+    public record Percentage(value: Double)
     ```
 
 ## API Endpoints
@@ -96,66 +96,16 @@ The service exposes RESTful APIs using Spring WebFlux, hosted at `/portfolios`. 
 | `/portfolios/{portfolioId}/allocations` | GET | Retrieves asset allocations | - | `Map[String, Percentage]` (JSON) |
 
 ### Example API Implementation
-```scala
-// src/portfolio-management-service/main/scala/api/PortfolioRoutes.scala
-package com.example.portfolio.api
-
-import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.model.StatusCodes
-import com.example.portfolio.domain.{Portfolio, Currency}
-import com.example.portfolio.repository.PortfolioRepository
-import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport._
-import io.circe.generic.auto._
-
-class PortfolioRoutes(repository: PortfolioRepository) {
-  val route = pathPrefix("portfolios") {
-    concat(
-      pathEnd {
-        post {
-          entity(as[CreatePortfolioRequest]) { request =>
-            val portfolio = Portfolio(
-              portfolioId = java.util.UUID.randomUUID().toString,
-              userId = request.userId,
-              assets = List(),
-              name = request.name,
-              createdAt = new java.util.Date()
-            )
-            repository.save(portfolio)
-            complete(StatusCodes.Created, portfolio)
-          }
-        }
-      },
-      path(Segment) { portfolioId =>
-        concat(
-          get {
-            repository.findById(portfolioId) match {
-              case Some(portfolio) => complete(portfolio)
-              case None => complete(StatusCodes.NotFound)
-            }
-          },
-          put {
-            entity(as[UpdatePortfolioRequest]) { request =>
-              repository.findById(portfolioId) match {
-                case Some(portfolio) =>
-                  val updated = portfolio.copy(name = request.name)
-                  repository.update(updated)
-                  complete(updated)
-                case None => complete(StatusCodes.NotFound)
-              }
-            }
-          },
-          delete {
-            repository.delete(portfolioId)
-            complete(StatusCodes.NoContent)
-          }
-        )
-      }
-    )
-  }
+```java
+// Example API implemented with Spring WebFlux
+@RestController
+@RequestMapping("/portfolios")
+public class PortfolioController {
+    // endpoint implementations
 }
 
-case class CreatePortfolioRequest(userId: String, name: String)
-case class UpdatePortfolioRequest(name: String)
+public record CreatePortfolioRequest(userId: String, name: String)
+public record UpdatePortfolioRequest(name: String)
 ```
 
 ## Event Handling
@@ -179,30 +129,17 @@ The service subscribes to and publishes domain events (see `domain_events.md`) v
 | `PortfolioRebalanced` | After rebalancing to meet allocation/risk targets | Performance Calculation, Risk Management, Reporting |
 
 ### Example Event Handler
-```scala
-// src/portfolio-management-service/main/scala/event/TradeExecutedHandler.scala
+```java
+// src/portfolio-management-service/main/java/event/TradeExecutedHandler.java
 package com.example.portfolio.event
 
 import com.example.portfolio.domain.{Portfolio, Asset, Currency}
 import com.example.portfolio.repository.PortfolioRepository
-import com.example.portfolio.service.PortfolioService
-import java.util.Date
-
-case class TradeExecuted(transactionId: String, portfolioId: String, assetId: String, quantity: Double, transactionType: String, price: Double, currency: Currency, timestamp: Date)
-
-object TradeExecutedHandler {
-  def handle(event: TradeExecuted, repository: PortfolioRepository): Unit = {
-    repository.findById(event.portfolioId).foreach { portfolio =>
-      val updatedPortfolio = PortfolioService.updatePortfolio(portfolio, event)
-      repository.update(updatedPortfolio)
-      // Publish PortfolioUpdated event to Kafka
-      publishPortfolioUpdated(updatedPortfolio)
+@Component
+public class TradeExecutedHandler {
+    public void handle(TradeExecuted event) {
+        // update portfolio and publish PortfolioUpdated
     }
-  }
-
-  private def publishPortfolioUpdated(portfolio: Portfolio): Unit = {
-    // Implementation using Spring Cloud Stream Kafka Producer
-  }
 }
 ```
 
@@ -214,48 +151,21 @@ object TradeExecutedHandler {
   - Table: `portfolio_assets`
     - Columns: `portfolio_id (FK)`, `asset_id`, `quantity`, `currency`
 - **Repository**:
-  ```scala
-  // src/portfolio-management-service/main/scala/repository/PortfolioRepository.scala
+  ```java
+  // src/portfolio-management-service/main/java/repository/PortfolioRepository.java
   package com.example.portfolio.repository
 
-  import com.example.portfolio.domain.{Portfolio, Asset, Currency}
-  import slick.jdbc.PostgresProfile.api._
-  import scala.concurrent.Future
+@Entity
+@Table(name = "portfolios")
+public class PortfolioEntity {
+    @Id String portfolioId;
+    String userId;
+    String name;
+    Timestamp createdAt;
+}
 
-  class PortfolioTable(tag: Tag) extends Table[(String, String, String, java.sql.Timestamp)](tag, "portfolios") {
-    def portfolioId = column[String]("portfolio_id", O.PrimaryKey)
-    def userId = column[String]("user_id")
-    def name = column[String]("name")
-    def createdAt = column[java.sql.Timestamp]("created_at")
-    def * = (portfolioId, userId, name, createdAt)
-  }
-
-  class PortfolioRepository(db: Database) {
-    private val portfolios = TableQuery[PortfolioTable]
-
-    def findById(portfolioId: String): Future[Option[Portfolio]] = {
-      // Implementation to fetch portfolio and assets
-      db.run(portfolios.filter(_.portfolioId === portfolioId).result.headOption).map {
-        case Some((id, userId, name, createdAt)) =>
-          // Fetch assets from portfolio_assets table
-          Some(Portfolio(id, userId, List(), name, createdAt))
-        case None => None
-      }
-    }
-
-    def save(portfolio: Portfolio): Future[Unit] = {
-      db.run(portfolios += (portfolio.portfolioId, portfolio.userId, portfolio.name, new java.sql.Timestamp(portfolio.createdAt.getTime)))
-    }
-
-    def update(portfolio: Portfolio): Future[Unit] = {
-      db.run(portfolios.filter(_.portfolioId === portfolio.portfolioId)
-        .update((portfolio.portfolioId, portfolio.userId, portfolio.name, new java.sql.Timestamp(portfolio.createdAt.getTime))))
-    }
-
-    def delete(portfolioId: String): Future[Unit] = {
-      db.run(portfolios.filter(_.portfolioId === portfolioId).delete).map(_ => ())
-    }
-  }
+public interface PortfolioRepository extends JpaRepository<PortfolioEntity, String> {
+}
   ```
 
 ## Integration Points
@@ -273,7 +183,7 @@ object TradeExecutedHandler {
 | **Reliability** | Event sourcing with EventStoreDB ensures auditability. Idempotent event handlers prevent duplicate processing. |
 | **Performance** | Project Reactor for low-latency event processing. Spring Data optimizes database queries. |
 | **Security** | Keycloak integration for authentication/authorization. TLS for API and Kafka communication. |
-| **Maintainability** | FP principles (immutable case classes) and DDD structure (domain, repository, service) ensure clean code. Tests in `src/portfolio-management-service/test/`. |
+| **Maintainability** | FP principles (immutable public recordes) and DDD structure (domain, repository, service) ensure clean code. Tests in `src/portfolio-management-service/test/`. |
 | **Compliance** | Event sourcing and compliance rule validation (via `ComplianceRuleUpdated`) support GDPR, MiFID II, and GIPS. |
 
 ## Example Workflow
@@ -284,7 +194,7 @@ object TradeExecutedHandler {
 5. Reporting Service generates a dashboard update via `ReportGenerated`.
 
 ## Implementation Guidelines
-- **Code Location**: Store code in `src/portfolio-management-service/main/scala/` with subpackages (`domain/`, `repository/`, `service/`, `api/`, `event/`).
+- **Code Location**: Store code in `src/portfolio-management-service/main/java/` with subpackages (`domain/`, `repository/`, `service/`, `api/`, `event/`).
 - **Testing**: Write unit tests (e.g., `PortfolioServiceTest.java`) in `src/test/java/` using JUnit 5 and Mockito.
 - **Dependencies**: Managed in `pom.xml` (Spring Boot, Spring Data, Kafka, etc.).
 - **Deployment**: Package as a JAR using `mvn package` and deploy via Docker/Kubernetes (`docker/portfolio-management-service/`).

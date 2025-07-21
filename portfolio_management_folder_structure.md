@@ -39,14 +39,14 @@ investment-portfolio-manager/
 ├── src/
 │   ├── portfolio-management-service/
 │   │   ├── main/
-│   │   │   ├── scala/
+│   │   │   ├── java/
 │   │   │   │   ├── domain/
-│   │   │   │   │   ├── Portfolio.scala
-│   │   │   │   │   ├── Asset.scala
-│   │   │   │   │   ├── Currency.scala
+│   │   │   │   │   ├── Portfolio.java
+│   │   │   │   │   ├── Asset.java
+│   │   │   │   │   ├── Currency.java
 │   │   │   │   │   └── ...
 │   │   │   │   ├── repository/
-│   │   │   │   │   ├── PortfolioRepository.scala
+│   │   │   │   │   ├── PortfolioRepository.java
 │   │   │   │   │   └── ...
 │   │   │   │   ├── service/
 │   │   │   │   │   ├── PortfolioService.java
@@ -57,115 +57,115 @@ investment-portfolio-manager/
 │   │   │   │   │   └── ...
 │   │   │   │   └── event/
 │   │   │   │       ├── TradeExecutedHandler.java
-│   │   │   │       ├── PortfolioUpdatedHandler.scala
+│   │   │   │       ├── PortfolioUpdatedHandler.java
 │   │   │   │       └── ...
 │   │   └── test/
-│   │       ├── scala/
+│   │       ├── java/
 │   │       │   ├── domain/
 │   │       │   │   ├── PortfolioTest.java
 │   │       │   │   └── ...
 │   │       │   ├── repository/
-│   │       │   │   ├── PortfolioRepositorySpec.scala
+│   │       │   │   ├── PortfolioRepositorySpec.java
 │   │       │   │   └── ...
 │   │       │   ├── service/
 │   │       │   └── ...
 │   ├── asset-management-service/
 │   │   ├── main/
-│   │   │   ├── scala/
+│   │   │   ├── java/
 │   │   │   │   ├── domain/
-│   │   │   │   │   ├── Asset.scala
-│   │   │   │   │   ├── AssetType.scala
+│   │   │   │   │   ├── Asset.java
+│   │   │   │   │   ├── AssetType.java
 │   │   │   │   │   └── ...
 │   │   │   │   ├── repository/
 │   │   │   │   ├── service/
 │   │   │   │   ├── api/
 │   │   │   │   └── event/
-│   │   │   │       ├── PriceUpdatedHandler.scala
+│   │   │   │       ├── PriceUpdatedHandler.java
 │   │   │   │       └── ...
 │   │   └── test/
-│   │       ├── scala/
+│   │       ├── java/
 │   │       │   ├── domain/
 │   │       │   ├── repository/
 │   │       │   ├── service/
 │   │       │   └── ...
 │   ├── transaction-management-service/
 │   │   ├── main/
-│   │   │   ├── scala/
+│   │   │   ├── java/
 │   │   │   │   ├── domain/
-│   │   │   │   │   ├── Transaction.scala
+│   │   │   │   │   ├── Transaction.java
 │   │   │   │   │   └── ...
 │   │   │   │   ├── repository/
 │   │   │   │   ├── service/
 │   │   │   │   ├── api/
 │   │   │   │   └── event/
-│   │   │   │       ├── TradeExecutedHandler.scala
+│   │   │   │       ├── TradeExecutedHandler.java
 │   │   │   │       └── ...
 │   │   └── test/
-│   │       ├── scala/
+│   │       ├── java/
 │   ├── performance-calculation-service/
 │   │   ├── main/
-│   │   │   ├── scala/
+│   │   │   ├── java/
 │   │   │   │   ├── domain/
 │   │   │   │   ├── repository/
 │   │   │   │   ├── service/
 │   │   │   │   ├── api/
 │   │   │   │   └── event/
-│   │   │   │       ├── PerformanceCalculatedHandler.scala
+│   │   │   │       ├── PerformanceCalculatedHandler.java
 │   │   │   │       └── ...
 │   │   └── test/
-│   │       ├── scala/
+│   │       ├── java/
 │   ├── risk-management-service/
 │   │   ├── main/
-│   │   │   ├── scala/
+│   │   │   ├── java/
 │   │   │   │   ├── domain/
 │   │   │   │   ├── repository/
 │   │   │   │   ├── service/
 │   │   │   │   ├── api/
 │   │   │   │   └── event/
-│   │   │   │       ├── RiskAssessmentUpdatedHandler.scala
+│   │   │   │       ├── RiskAssessmentUpdatedHandler.java
 │   │   │   │       └── ...
 │   │   └── test/
-│   │       ├── scala/
+│   │       ├── java/
 │   ├── reporting-service/
 │   │   ├── main/
-│   │   │   ├── scala/
+│   │   │   ├── java/
 │   │   │   │   ├── domain/
 │   │   │   │   ├── repository/
 │   │   │   │   ├── service/
 │   │   │   │   ├── api/
 │   │   │   │   └── event/
-│   │   │   │       ├── ReportGeneratedHandler.scala
+│   │   │   │       ├── ReportGeneratedHandler.java
 │   │   │   │       └── ...
 │   │   └── test/
-│   │       ├── scala/
+│   │       ├── java/
 │   ├── user-management-service/
 │   │   ├── main/
-│   │   │   ├── scala/
+│   │   │   ├── java/
 │   │   │   │   ├── domain/
-│   │   │   │   │   ├── User.scala
+│   │   │   │   │   ├── User.java
 │   │   │   │   │   └── ...
 │   │   │   │   ├── repository/
 │   │   │   │   ├── service/
 │   │   │   │   ├── api/
 │   │   │   │   └── event/
-│   │   │   │       ├── UserCreatedHandler.scala
-│   │   │   │       ├── UserUpdatedHandler.scala
+│   │   │   │       ├── UserCreatedHandler.java
+│   │   │   │       ├── UserUpdatedHandler.java
 │   │   │   │       └── ...
 │   │   └── test/
-│   │       ├── scala/
+│   │       ├── java/
 │   ├── integration-service/
 │   │   ├── main/
-│   │   │   ├── scala/
+│   │   │   ├── java/
 │   │   │   │   ├── domain/
 │   │   │   │   ├── repository/
 │   │   │   │   ├── service/
 │   │   │   │   ├── api/
 │   │   │   │   └── event/
-│   │   │   │       ├── MarketDataUpdatedHandler.scala
-│   │   │   │       ├── CustodianDataSyncedHandler.scala
+│   │   │   │       ├── MarketDataUpdatedHandler.java
+│   │   │   │       ├── CustodianDataSyncedHandler.java
 │   │   │   │       └── ...
 │   │   └── test/
-│   │       ├── scala/
+│   │       ├── java/
 │   └── ...
 ├── assets/
 │   ├── diagrams/
@@ -206,13 +206,13 @@ investment-portfolio-manager/
 ### `src/`
 - **Purpose**: Contains all source code for the application, organized by microservice to support the microservices architecture.
 - **Subdirectories** (per microservice, e.g., `portfolio-management-service/`):
-  - **`main/scala/`**: Production code, organized into subpackages:
-    - **`domain/`**: Domain models (e.g., `Portfolio.scala`, `Asset.scala`) implementing entities, aggregates, and value objects as per DDD.
-    - **`repository/`**: Repository interfaces and implementations (e.g., `PortfolioRepository.scala`) for data persistence (e.g., PostgreSQL via Slick).
-    - **`service/`**: Domain and application services (e.g., `PortfolioService.scala`, `PortfolioPerformanceCalculator.scala`) for business logic.
-    - **`api/`**: REST API routes and handlers (e.g., `PortfolioRoutes.scala`) using Spring WebFlux.
-    - **`event/`**: Event handlers (e.g., `TradeExecutedHandler.scala`) for processing Kafka events.
-  - **`test/java/`**: Unit and integration tests, mirroring the `main/scala/` structure (e.g., `PortfolioSpec.scala` using JUnit 5).
+  - **`main/java/`**: Production code, organized into subpackages:
+    - **`domain/`**: Domain models (e.g., `Portfolio.java`, `Asset.java`) implementing entities, aggregates, and value objects as per DDD.
+    - **`repository/`**: Repository interfaces and implementations (e.g., `PortfolioRepository.java`) for data persistence (e.g., PostgreSQL via Slick).
+    - **`service/`**: Domain and application services (e.g., `PortfolioService.java`, `PortfolioPerformanceCalculator.java`) for business logic.
+    - **`api/`**: REST API routes and handlers (e.g., `PortfolioRoutes.java`) using Spring WebFlux.
+    - **`event/`**: Event handlers (e.g., `TradeExecutedHandler.java`) for processing Kafka events.
+  - **`test/java/`**: Unit and integration tests, mirroring the `main/java/` structure (e.g., `PortfolioSpec.java` using JUnit 5).
 - **Rationale**: Follows standard Maven project conventions (Maven structure) and DDD principles, ensuring modularity and testability. Each microservice is self-contained for independent development and deployment.
 
 ### `assets/`
