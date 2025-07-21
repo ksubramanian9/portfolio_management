@@ -31,14 +31,10 @@ Each microservice uses DDD tactical patterns (entities, aggregates, value object
   - **Repository**: PortfolioRepository (manages persistence).
   - **Domain Service**: PortfolioPerformanceCalculator (pure function for metrics).
   - **FP Example**: A pure function to update portfolio state:
-    ```scala
-    case class Portfolio(id: String, assets: List[Asset])
-    def updatePortfolio(portfolio: Portfolio, trade: Trade): Portfolio = {
-      val updatedAssets = trade match {
-        case Buy(asset, quantity) => portfolio.assets :+ asset.copy(quantity = quantity)
-        case Sell(assetId, quantity) => portfolio.assets.filterNot(_.id == assetId)
-      }
-      Portfolio(portfolio.id, updatedAssets)
+    ```java
+    public record Portfolio(String id, List<Asset> assets) {}
+    public Portfolio updatePortfolio(Portfolio portfolio, Trade trade) {
+        // update portfolio assets based on trade
     }
     ```
 - **Asset Management Service**:
@@ -51,20 +47,21 @@ Each microservice uses DDD tactical patterns (entities, aggregates, value object
   - **Value Objects**: TransactionType, Amount (immutable).
   - **Repository**: TransactionRepository.
   - **FP Example**: A pure function to process a transaction:
-    ```scala
-    case class Transaction(id: String, assetId: String, amount: Double, date: Date)
-    def recordTransaction(assetId: String, amount: Double): Transaction =
-      Transaction(generateId(), assetId, amount, new Date())
+    ```java
+    public record Transaction(String id, String assetId, double amount, Date date) {}
+    public Transaction recordTransaction(String assetId, double amount) {
+        return new Transaction(generateId(), assetId, amount, new Date());
+    }
     ```
 - **Performance Calculation Service**:
   - **Domain Service**: PerformanceCalculator (pure function).
   - **Value Objects**: ReturnRate, Benchmark (immutable).
   - **FP Example**: A pure function for performance calculation:
-    ```scala
-    case class PerformanceMetrics(totalReturn: Double, benchmarkReturn: Double)
-    def calculatePerformance(portfolio: Portfolio, benchmark: Benchmark): PerformanceMetrics = {
-      val totalReturn = portfolio.assets.map(_.value).sum / portfolio.initialValue
-      PerformanceMetrics(totalReturn, benchmark.currentReturn)
+    ```java
+    public record PerformanceMetrics(double totalReturn, double benchmarkReturn) {}
+    public PerformanceMetrics calculatePerformance(Portfolio portfolio, Benchmark benchmark) {
+        double totalReturn = portfolio.assets().stream().mapToDouble(Asset::value).sum() / portfolio.initialValue();
+        return new PerformanceMetrics(totalReturn, benchmark.currentReturn());
     }
     ```
 - **Risk Management Service**:
@@ -114,11 +111,11 @@ FP principles enhance reliability and testability:
 
 **FP Example**:
 - Updating a portfolio state:
-  ```scala
-  case class Portfolio(id: String, assets: List[Asset])
-  def addAsset(portfolio: Portfolio, asset: Asset): Portfolio =
-    Portfolio(portfolio.id, portfolio.assets :+ asset)
-  ```
+  ```java
+  public record Portfolio(String id, List<Asset> assets) {}
+  public Portfolio addAsset(Portfolio portfolio, Asset asset) {
+    return new Portfolio(portfolio.id(), new ArrayList<>(portfolio.assets()) {{ add(asset); }});
+  }
 
 ## Communication Between Services
 - **Synchronous Communication**: Use REST APIs or gRPC for operations like retrieving portfolio details.

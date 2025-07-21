@@ -3,7 +3,7 @@ The bounded_contexts.md document outlines the bounded contexts of the Investment
 
 # Bounded Contexts
 
-The Investment Portfolio Manager application is structured using Domain-Driven Design (DDD), with each bounded context defining a specific area of the domain with its own model, ubiquitous language, and responsibilities. These contexts align with the microservices architecture, ensuring modularity, loose coupling, and clear boundaries. Each bounded context corresponds to a microservice, interacts through APIs or events (via Event-Driven Architecture), and uses Scala with Functional Programming (FP) principles for reliable computations. This document outlines each bounded context, its purpose, key entities, and relationships, supporting the system’s scalability, security, reliability, and maintainability.
+The Investment Portfolio Manager application is structured using Domain-Driven Design (DDD), with each bounded context defining a specific area of the domain with its own model, ubiquitous language, and responsibilities. These contexts align with the microservices architecture, ensuring modularity, loose coupling, and clear boundaries. Each bounded context corresponds to a microservice, interacts through APIs or events (via Event-Driven Architecture), and uses Java with functional programming principles for reliable computations. This document outlines each bounded context, its purpose, key entities, and relationships, supporting the system’s scalability, security, reliability, and maintainability.
 
 ## Purpose
 - Define clear boundaries for each microservice’s domain model to prevent overlap and ensure consistency.
@@ -33,8 +33,8 @@ The Investment Portfolio Manager application is structured using Domain-Driven D
   - **APIs**: Provides endpoints like `/portfolios/{id}` to retrieve portfolio details.
   - **External Systems**: Syncs with custodians (via Integration Service) for holding data.
 - **Example**:
-  ```scala
-  case class Portfolio(portfolioId: String, userId: String, assets: List[Asset], name: String, createdAt: Date)
+  ```java
+  public record Portfolio(portfolioId: String, userId: String, assets: List[Asset], name: String, createdAt: Date)
   ```
 
 ### 2. Asset Management
@@ -54,8 +54,8 @@ The Investment Portfolio Manager application is structured using Domain-Driven D
   - **APIs**: Provides endpoints like `/assets/{id}/price` for price queries.
   - **External Systems**: Integrates with market data providers (e.g., Bloomberg) via Integration Service.
 - **Example**:
-  ```scala
-  case class Asset(assetId: String, assetType: AssetType, price: Price, currency: Currency)
+  ```java
+  public record Asset(assetId: String, assetType: AssetType, price: Price, currency: Currency)
   ```
 
 ### 3. Transaction Management
@@ -75,8 +75,8 @@ The Investment Portfolio Manager application is structured using Domain-Driven D
   - **APIs**: Provides endpoints like `/transactions/{id}` for transaction details.
   - **External Systems**: Integrates with brokers for trade execution.
 - **Example**:
-  ```scala
-  case class Transaction(transactionId: String, assetId: String, quantity: Double, transactionType: TransactionType, date: Date)
+  ```java
+  public record Transaction(transactionId: String, assetId: String, quantity: Double, transactionType: TransactionType, date: Date)
   ```
 
 ### 4. Performance Calculation
@@ -97,8 +97,8 @@ The Investment Portfolio Manager application is structured using Domain-Driven D
   - **APIs**: Provides endpoints like `/portfolios/{id}/performance` for metrics.
   - **External Systems**: Uses benchmark data (via Integration Service).
 - **Example**:
-  ```scala
-  case class PerformanceMetric(totalReturn: Double, benchmarkReturn: Double)
+  ```java
+  public record PerformanceMetric(totalReturn: Double, benchmarkReturn: Double)
   ```
 
 ### 5. Risk Management
@@ -120,8 +120,8 @@ The Investment Portfolio Manager application is structured using Domain-Driven D
   - **APIs**: Provides endpoints like `/portfolios/{id}/risk` for risk metrics.
   - **External Systems**: Integrates with regulatory reporting systems.
 - **Example**:
-  ```scala
-  case class RiskScore(value: Double)
+  ```java
+  public record RiskScore(value: Double)
   ```
 
 ### 6. Reporting
@@ -141,8 +141,8 @@ The Investment Portfolio Manager application is structured using Domain-Driven D
   - **APIs**: Provides endpoints like `/reports/{id}` for report retrieval.
   - **External Systems**: Exports reports to tax software.
 - **Example**:
-  ```scala
-  case class Report(reportId: String, reportType: ReportType, dateRange: DateRange)
+  ```java
+  public record Report(reportId: String, reportType: ReportType, dateRange: DateRange)
   ```
 
 ### 7. User Management
@@ -162,8 +162,8 @@ The Investment Portfolio Manager application is structured using Domain-Driven D
   - **APIs**: Provides endpoints like `/users/{id}` for user details.
   - **External Systems**: Integrates with Keycloak for authentication.
 - **Example**:
-  ```scala
-  case class User(userId: String, role: Role, permissions: List[Permission])
+  ```java
+  public record User(userId: String, role: Role, permissions: List[Permission])
   ```
 
 ### 8. Integration
@@ -183,8 +183,8 @@ The Investment Portfolio Manager application is structured using Domain-Driven D
   - **APIs**: Provides endpoints like `/market-data/{assetId}` for external data.
   - **External Systems**: Connects to Bloomberg, Reuters, BNY Mellon, etc.
 - **Example**:
-  ```scala
-  case class MarketData(assetId: String, price: Double, currency: Currency)
+  ```java
+  public record MarketData(assetId: String, price: Double, currency: Currency)
   ```
 
 ## Context Mapping
@@ -215,7 +215,7 @@ The bounded contexts interact through APIs, events, or shared models, as defined
 
 ## References
 - [Domain-Driven Design: Tackling Complexity in the Heart of Software](https://www.domainlanguage.com/ddd/)
-- [Implementing Domain-Driven Design with Scala](https://www.lightbend.com/blog/domain-driven-design-with-scala)
+- [Implementing Domain-Driven Design](https://www.baeldung.com/domain-driven-design)
 - [Microservices Context Mapping](https://microservices.io/patterns/refactoring/context-mapping.html)
 
 ## Additional Notes:

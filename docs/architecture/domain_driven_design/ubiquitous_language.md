@@ -92,10 +92,10 @@ The application is divided into bounded contexts, each with its own set of terms
   - **Example**: 1 USD = 0.85 EUR.
 
 ## Usage Guidelines
-- **Consistency**: Use these terms consistently in code (e.g., Scala case classes), APIs, event names, and documentation.
-  - **Example**: A Scala case class for Portfolio:
-    ```scala
-    case class Portfolio(portfolioId: String, userId: String, assets: List[Asset], name: String, createdAt: Date)
+- **Consistency**: Use these terms consistently in code (e.g., Java classes), APIs, event names, and documentation.
+  - **Example**: A Java class for Portfolio:
+    ```java
+    public record Portfolio(portfolioId: String, userId: String, assets: List[Asset], name: String, createdAt: Date)
     ```
 - **Context-Specific Meanings**: Some terms (e.g., "Asset") may have slightly different meanings in different bounded contexts. For example, in Asset Management, "Asset" includes pricing details, while in Portfolio Management, it focuses on quantity and allocation.
 - **Documentation**: Reference this language in all Markdown files (e.g., `portfolio_management_service.md`) and ensure alignment in API contracts and event schemas.
@@ -108,15 +108,15 @@ The application is divided into bounded contexts, each with its own set of terms
 - **Transaction Management**:
   - A "Trade" (Transaction Type: Buy) adds an "Asset" to a "Portfolio," triggering a `TradeExecuted` event.
   - Code Example:
-    ```scala
-    case class TradeExecuted(assetId: String, quantity: Double, transactionType: String)
+    ```java
+    public record TradeExecuted(assetId: String, quantity: Double, transactionType: String)
     ```
 - **Reporting**:
   - A "Report" for "Capital Gains/Losses" is generated from "Transactions" and displayed on a "Dashboard."
 
 ## References
 - [Domain-Driven Design: Tackling Complexity in the Heart of Software](https://www.domainlanguage.com/ddd/)
-- [Implementing Domain-Driven Design with Scala](https://www.lightbend.com/blog/domain-driven-design-with-scala)
+- [Implementing Domain-Driven Design](https://www.baeldung.com/domain-driven-design)
 - [Investment Portfolio Management Glossary](https://www.investopedia.com/terms/)
 
 

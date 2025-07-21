@@ -34,18 +34,21 @@ The domain model follows DDD principles, using entities, aggregates, value objec
 
 - **Value Objects**:
   - **Currency**: Represents a currency (e.g., USD, EUR) with immutable attributes.
-    ```scala
-    case class Currency(code: String)
+    ```java
+    public record Currency(code: String)
     ```
   - **Percentage**: Represents allocation weights (e.g., 30% equities).
-    ```scala
-    case class Percentage(value: Double) {
-      require(value >= 0 && value <= 100, "Percentage must be between 0 and 100")
+    ```java
+    public record Percentage(double value) {
+        public Percentage {
+            if (value < 0 || value > 100) {
+                throw new IllegalArgumentException("Percentage must be between 0 and 100");
+            }
+        }
     }
-    ```
   - **PortfolioValue**: Represents the total value of the portfolio in a given currency.
-    ```scala
-    case class PortfolioValue(amount: Double, currency: Currency)
+    ```java
+    public record PortfolioValue(amount: Double, currency: Currency)
     ```
 
 - **Repository**: PortfolioRepository
@@ -59,15 +62,15 @@ The domain model follows DDD principles, using entities, aggregates, value objec
 - **Domain Service**: PortfolioPerformanceCalculator
   - **Description**: Computes portfolio-level metrics (e.g., total value, allocation percentages) using pure functions.
   - **Example**:
-    ```scala
-    object PortfolioPerformanceCalculator {
-      def calculateValue(portfolio: Portfolio, assetPrices: Map[String, Double]): PortfolioValue = {
-        val total = portfolio.assets.foldLeft(0.0) { (sum, asset) =>
-          sum + (assetPrices.getOrElse(asset.id, 0.0) * asset.quantity)
+    ```java
+      public class PortfolioPerformanceCalculator {
+        public static PortfolioValue calculateValue(Portfolio portfolio, Map<String, Double> assetPrices) {
+            double total = portfolio.assets().stream()
+                .mapToDouble(a -> assetPrices.getOrDefault(a.id(), 0.0) * a.quantity())
+                .sum();
+            return new PortfolioValue(total, portfolio.assets().get(0).currency());
         }
-        PortfolioValue(total, portfolio.assets.headOption.map(_.currency).getOrElse(Currency("USD")))
       }
-    }
     ```
 
 ## Event Handling
@@ -77,16 +80,13 @@ The service participates in EDA by subscribing to and publishing events via Apac
   - **TradeExecuted**: Triggered by the Transaction Management Service when a buy/sell order is completed.
     - **Action**: Update the portfolio’s asset list.
     - **Example**:
-      ```scala
-      case class TradeExecuted(assetId: String, quantity: Double, transactionType: String)
-      def handleTradeExecuted(portfolio: Portfolio, event: TradeExecuted): Portfolio = {
-        val updatedAssets = event.transactionType match {
-          case "BUY" => portfolio.assets :+ Asset(event.assetId, event.quantity, Currency("USD"))
-          case "SELL" => portfolio.assets.filterNot(_.id == event.assetId)
+      ```java
+        public record TradeExecuted(String assetId, double quantity, String transactionType) {}
+        public Portfolio handleTradeExecuted(Portfolio portfolio, TradeExecuted event) {
+            List<Asset> updatedAssets = updateAssets(portfolio.assets(), event);
+            return new Portfolio(portfolio.id(), updatedAssets);
         }
-        Portfolio(portfolio.id, updatedAssets)
-      }
-      ```
+        ```
   - **PriceUpdated**: Triggered by the Asset Management Service when asset prices change.
     - **Action**: Recalculate portfolio value.
   - **DividendPaid**: Triggered by the Transaction Management Service for dividend distributions.
@@ -94,8 +94,8 @@ The service participates in EDA by subscribing to and publishing events via Apac
 
 - **Published Events**:
   - **PortfolioUpdated**: Published when the portfolio’s state changes (e.g., after a trade).
-    ```scala
-    case class PortfolioUpdated(portfolioId: String, newValue: PortfolioValue)
+    ```java
+    public record PortfolioUpdated(portfolioId: String, newValue: PortfolioValue)
     ```
 
 ## API Endpoints
@@ -139,14 +139,13 @@ The Portfolio Management Service interacts with other services and external syst
 
 ## Technical Considerations
 - **Database**: PostgreSQL for structured portfolio data, accessed via Slick for type-safe queries.
-  ```scala
-  import slick.jdbc.PostgresProfile.api._
-  class PortfolioTable(tag: Tag) extends Table[Portfolio](tag, "portfolios") {
-    def id = column[String]("id", O.PrimaryKey)
-    def userId = column[String]("user_id")
-    def name = column[String]("name")
-    def * = (id, userId, name) <> (Portfolio.tupled, Portfolio.unapply)
-  }
+    @Entity
+    @Table(name = "portfolios")
+    public class PortfolioEntity {
+        @Id String id;
+        String userId;
+        String name;
+    }
   ```
  - **Event Sourcing**: Uses EventStoreDB to store events like "PortfolioUpdated" for auditability, integrated with Axon Framework.
  - **Security**: Implements OAuth2 (via Keycloak) for authentication and RBAC for user roles (e.g., investor, advisor).
