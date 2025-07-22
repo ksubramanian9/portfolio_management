@@ -19,14 +19,17 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      # KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://host.docker.internal:9092
+      # KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_LOG4J_LOGGERS: "kafka=INFO,kafka.controller=INFO,state.change.logger=INFO"
+      # KAFKA_LOG4J_LOGGERS: "kafka=INFO,kafka.controller=INFO,state.change.logger=INFO"
+      KAFKA_LOG4J_LOGGERS: "kafka=DEBUG,kafka.controller=DEBUG,state.change.logger=DEBUG"
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: ""  # Explicitly disable Kraft mode
       KAFKA_CONTROLLER_LISTENER_NAMES: ""  # Disable Kraft controller
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
     volumes:
       - kafka-data:/var/lib/kafka/data
 
