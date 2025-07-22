@@ -1,3 +1,10 @@
 package com.example.portfolio.domain;
 
-public record Portfolio(String id, String name) {}
+import java.time.Instant;
+import java.util.List;
+
+public record Portfolio(String portfolioId,
+                        String userId,
+                        List<Asset> assets,
+                        String name,
+                        Instant createdAt) {}
