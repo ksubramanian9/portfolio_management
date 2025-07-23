@@ -37,6 +37,7 @@ class TradeExecutedHandlerTest {
         handler.handle(trade).block();
 
         Portfolio updated = repo.findById("p1").block();
+        assertThat(updated).isNotNull();
         assertThat(updated.assets()).hasSize(1);
         Asset asset = updated.assets().get(0);
         assertThat(asset.assetId()).isEqualTo("AAPL");

@@ -74,7 +74,9 @@ class PortfolioControllerIntegrationTest {
                 .expectBody()
                 .jsonPath("$.name").isEqualTo("Updated");
 
-        assertThat(repository.findById("2").block().name()).isEqualTo("Updated");
+        Portfolio updated = repository.findById("2").block();
+        assertThat(updated).isNotNull();
+        assertThat(updated.name()).isEqualTo("Updated");
     }
 
     @Test
